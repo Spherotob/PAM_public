@@ -1,4 +1,4 @@
-function model_pa = build_PAM(model,totProtConc,varargin)
+function model_pa = buildPAM(model,totProtConc,varargin)
 % Add protein allocation constraints to account for the total
 % condition-dependent proteome in stoichiometric reconstructions
 %
