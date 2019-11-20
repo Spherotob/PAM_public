@@ -109,11 +109,11 @@ if ~isempty(kcat) && ~isempty(rxnID)
     else
         % load parameter
         rxns2ECrxns         = opt.activeEnzymesSector.rxns2ECrxns;
-        cnstrIDs2ECrxns     = opt.activeEnzymesSector.cnstrIDs2ECrxns;
+        cnstrID2ECrxns     = opt.activeEnzymesSector.cnstrID2ECrxns;
         ECrxns              = opt.activeEnzymesSector.ECrxns;
         for i=1:length(kcat)
             pos     = find(strcmp(rxns2ECrxns,rxnID{i}));
-            model_pa.S(strcmp(model_pa.mets,cnstrIDs2ECrxns{pos}),...
+            model_pa.S(strcmp(model_pa.mets,cnstrID2ECrxns{pos}),...
                         strcmp(model_pa.rxns,ECrxns{pos})) ...
                 = -(kcat(i)*3600)*1e-6;
             % save new kcat value
@@ -136,7 +136,7 @@ if ~isempty(totProtConc)
     model_pa.b(strcmp(model_pa.mets,opt.totalProtein.cnstrID))    ...
                 = totProtConc*1000;
     % save new value
-    oldconc     = opt.totalProteinConcentration;
+    oldconc     = opt.totalProtein.totalProteinConcentration;
     opt.totalProtein.totalProteinConcentration   = totProtConc;
     % print
     if printFlag
@@ -180,7 +180,8 @@ if ~isempty(subsRxnID) && ~isempty(subsUptakeMax)
         % delete link to current substrate
         for i=1:length(opt.excessEnzymesSector.subsRxnID)
             model_pa.S(EEPS_pos,find(strcmp(model_pa.rxns,...
-                opt.excessEnzymesSector.subsRxnID{i})))   = 0;            
+                opt.excessEnzymesSector.subsRxnID{i})))   = 0;
+            model_pa    = changeRxnBounds(model_pa,opt.excessEnzymesSector.subsRxnID{i},0,'b');
         end
             
         
@@ -196,7 +197,9 @@ if ~isempty(subsRxnID) && ~isempty(subsUptakeMax)
                 subsRxnID_s{end+1,1}        = subsRxnID{i};
                 subsUptakeMax_s(end+1,1)    = subsUptakeMax(i);
                 % change parameter
-                model_pa.S(EEPS_pos,subsRxnNum(end)) = (1000*EEPS_0)/subsUptakeMax(i);   
+                model_pa.S(EEPS_pos,subsRxnNum(end)) = (1000*EEPS_0)/subsUptakeMax(i); 
+                % change reaction bounds
+                model_pa    = changeRxnBounds(model_pa,subsRxnID{i},subsUptakeMax(i),'u');
                 % print
                 if printFlag
                     fprintf(['New substrate uptake reaction: ',subsRxnID{i},'\n'])
