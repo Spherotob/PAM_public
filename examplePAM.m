@@ -1,4 +1,4 @@
-%% Example script for builiding and handling proein allocation models
+%% Example script for builiding and handling protein allocation models
 % 
 % 
 % 
@@ -67,20 +67,20 @@ model_pa = buildPAM(model_i,totProtConc,...
                 'excEnzSector',excEnzSector,...
                 'transSector',transSector);
 
-
-%% change parameter values
-model_pa    = changePAMParameter(model_pa,...
-                'kcat',[1,2],'rxnID',{'PDH','PGI_f'},...    % change kcat values
-                'totProtConc',0.311,...     % change total protein concentration
-                'subsRxnID','EX_ac_e_b','subsUptakeMax',20,...  % change substrate
-                'EEPS_0',excEnzSector.EEPS_0*0.9,...    % change protein allocation towards the excess enzymes sector
-                'TPS_0',transSector.TPS_0*1.1,...   % change protein allocation towards the translational sector
-                'TPS_mu',transSector.TPS_mu*1.5,... % change slope of the translational protein sector
-                'printFlag',1);     % change print flag
-
-
-
-%% test model
-sol     = optimizeCbModel(model_pa,'max');
+% 
+% %% change parameter values
+% model_pa    = changePAMParameter(model_pa,...
+%                 'kcat',[1,2],'rxnID',{'PDH','PGI_f'},...    % change kcat values
+%                 'totProtConc',0.311,...     % change total protein concentration
+%                 'subsRxnID','EX_ac_e_b','subsUptakeMax',20,...  % change substrate
+%                 'EEPS_0',excEnzSector.EEPS_0*0.9,...    % change protein allocation towards the excess enzymes sector
+%                 'TPS_0',transSector.TPS_0*1.1,...   % change protein allocation towards the translational sector
+%                 'TPS_mu',transSector.TPS_mu*1.5,... % change slope of the translational protein sector
+%                 'printFlag',1);     % change print flag
+% 
+% 
+% 
+% %% test model
+% sol     = optimizeCbModel(model_pa,'max');
 
 
